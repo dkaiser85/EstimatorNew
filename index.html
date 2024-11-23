@@ -31,17 +31,20 @@
             padding: 10px;
             box-sizing: border-box;
             width: 100%;
+            display: flex;
+            justify-content: center;
         }
 
         /* Container Styling */
         .calculator-container {
             max-width: 700px;
-            width: calc(100% - 20px); /* Account for body padding */
+            width: 100%;
             margin: 0 auto;
             padding: 25px;
             border-radius: 10px;
             background-color: transparent;
             box-shadow: none;
+            box-sizing: border-box;
         }
 
         /* Header Styling */
@@ -71,7 +74,7 @@
 
         .input-group {
             margin-bottom: 25px;
-            padding: 0 20px; /* Keep padding for consistent styling */
+            padding: 0;
         }
 
         .input-group label {
@@ -235,12 +238,16 @@
             }
 
             body {
-                padding: 5px;
+                padding: 10px;
             }
             
             .calculator-container {
-                width: calc(100% - 10px);
                 padding: 15px;
+                width: 100%;
+            }
+
+            .input-group {
+                padding: 0;
             }
         }
 
