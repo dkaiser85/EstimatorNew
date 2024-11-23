@@ -252,6 +252,67 @@
             }
         }
 
+        /* Add these new styles */
+        .info-icon {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 16px;
+            height: 16px;
+            background-color: transparent;
+            color: #6666CC;
+            border: 1px solid #6666CC;
+            border-radius: 50%;
+            font-size: 12px;
+            margin-left: 5px;
+            cursor: pointer;
+            position: relative;
+            font-style: italic;
+            vertical-align: middle;
+            position: relative;
+            top: -2px;
+        }
+
+        .info-icon:hover {
+            background-color: #6666CC;
+            color: white;
+        }
+
+        .tooltip {
+            visibility: hidden;
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            width: 200px;
+            text-align: left;
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .info-icon:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Add arrow to tooltip */
+        .tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #333 transparent transparent transparent;
+        }
+
     </style>
 </head>
 <body>
@@ -265,19 +326,34 @@
     <div class="input-section">
         <!-- Total Labor Spend Input -->
         <div class="input-group">
-            <label for="totalLaborCost">Total Labor Spend (USD)</label>
+            <label for="totalLaborCost">
+                Total Labor Spend (USD)
+                <span class="info-icon">i
+                    <span class="tooltip">The total amount spent annually on employee salaries, wages, and benefits.</span>
+                </span>
+            </label>
             <input type="text" id="totalLaborCost" placeholder="Enter your total labor spend">
         </div>
 
         <!-- Estimated Employee Engagement Input -->
         <div class="input-group">
-            <label for="employeeEngagement">Estimated Employee Engagement (%)</label>
+            <label for="employeeEngagement">
+                Estimated Employee Engagement (%)
+                <span class="info-icon">i
+                    <span class="tooltip">According to Gallup, the annual employee engagement for the US is 33%, Global is 23%, and Best-Practice Organizations is 70%.</span>
+                </span>
+            </label>
             <input type="number" id="employeeEngagement" placeholder="Enter estimated employee engagement" min="0" max="100">
         </div>
 
         <!-- Projected Turnover Percentage Input -->
         <div class="input-group">
-            <label for="turnoverPercentage">Projected Turnover Percentage (%)</label>
+            <label for="turnoverPercentage">
+                Projected Turnover Percentage (%)
+                <span class="info-icon">i
+                    <span class="tooltip">The expected percentage of employees who will leave the organization within the next year.</span>
+                </span>
+            </label>
             <input type="number" id="turnoverPercentage" placeholder="Enter projected turnover percentage" min="0" max="100">
         </div>
     </div>
@@ -285,7 +361,12 @@
     <div class="results-section">
         <!-- Overall Engagement Gauge -->
         <div class="result-item">
-            <h3>Overall Engagement</h3>
+            <h3>
+                Overall Engagement
+                <span class="info-icon">i
+                    <span class="tooltip">This reflects the extent to which the organization meets the emotional, intellectual, and practical needs of its employees, ensuring they are supported, valued, and aligned with the organization’s goals. Addressing these needs directly drives their investment and motivation to contribute to success.</span>
+                </span>
+            </h3>
             <div class="gauge">
                 <svg width="195" height="195" viewBox="0 0 195 195">
                     <!-- Background Arc -->
@@ -302,7 +383,12 @@
 
         <!-- Return-On-Labor® Gauge -->
         <div class="result-item">
-            <h3>Return-On-Labor®</h3>
+            <h3>
+                Return-On-Labor®
+                <span class="info-icon">i
+                    <span class="tooltip">This calculates the financial efficiency of labor by balancing employee engagement levels with their contributions to business outcomes.</span>
+                </span>
+            </h3>
             <div class="gauge">
                 <svg width="195" height="195" viewBox="0 0 195 195">
                     <!-- Background Arc -->
@@ -321,19 +407,34 @@
     <div class="financial-metrics">
         <!-- A 1% Engagement Shift in Engagement is worth -->
         <div class="financial-item">
-            <h3>A 1% Shift in Engagement is worth</h3>
+            <h3>
+                A 1% Shift in Engagement is worth
+                <span class="info-icon">i
+                    <span class="tooltip">The financial and operational impact of improving overall employee engagement by just 1%. This demonstrates how even small changes in engagement can significantly affect productivity, retention, and organizational profitability.</span>
+                </span>
+            </h3>
             <p class="green" id="onePercentChange">--</p>
         </div>
 
         <!-- Annualized Lost Labor -->
         <div class="financial-item">
-            <h3>Annualized Lost Labor</h3>
+            <h3>
+                Annualized Lost Labor
+                <span class="info-icon">i
+                    <span class="tooltip">The annual cost of underutilized potential within the workforce, calculated based on the gap between employees’ contributions and the organization’s investment in labor.</span>
+                </span>
+            </h3>
             <p class="red" id="lostLaborCost">--</p>
         </div>
 
         <!-- Annualized Total Losses with Turnover -->
         <div class="financial-item">
-            <h3>Annualized Total Losses with Turnover</h3>
+            <h3>
+                Annualized Total Losses with Turnover
+                <span class="info-icon">i
+                    <span class="tooltip">It represents the full annual cost to profitability, combining lost productivity from disengagement with the additional expenses and disruptions caused by workforce turnover.</span>
+                </span>
+            </h3>
             <p class="red" id="totalAnnualizedLosses">--</p>
         </div>
     </div>
