@@ -658,6 +658,21 @@
         <img src="https://static.showit.co/file/JNQ0xT5W_YRPIk_uSDJ7-Q/176740/3.png" alt="Company Logo" class="logo">
     </div>
 
+    <!-- Add reset button here -->
+    <div style="text-align: center; margin: 20px 0;">
+        <button id="resetButton" style="
+            background-color: #6666CC;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        ">Reset Calculator</button>
+    </div>
+
     <div class="calculator-footer">
         <p>&copy; 2024 The Culture MRI®. All Rights Reserved.</p>
     </div>
@@ -688,7 +703,16 @@
         const onePercentChangeEl = document.getElementById('onePercentChange');
         const totalAnnualizedLossesEl = document.getElementById('totalAnnualizedLosses');
 
-        
+        const resetButton = document.getElementById('resetButton');
+        resetButton.addEventListener('click', function() {
+            // Clear all input fields
+            inputLaborCost.value = '';
+            inputEngagement.value = '';
+            inputTurnover.value = '';
+            
+            // Reset all calculations and displays
+            resetGauges();
+        });
 
         // Initialize gauges and displays
         calculateMetrics();
