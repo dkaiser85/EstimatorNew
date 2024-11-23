@@ -494,6 +494,23 @@
             gap: 5px; /* Adds consistent spacing between label and icon */
         }
 
+        /* Add/modify these styles */
+        @media (max-width: 600px) {
+            .financial-item h3 {
+                text-align: center; /* Center the titles */
+                padding-right: 35px; /* Increase padding to accommodate the info icon */
+                padding-left: 35px; /* Add left padding for balance */
+                position: relative; /* For absolute positioning of info icon */
+            }
+
+            .financial-item .info-icon {
+                position: absolute;
+                right: 5px;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+        }
+
     </style>
 </head>
 <body>
