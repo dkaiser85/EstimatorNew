@@ -1,6 +1,6 @@
 {
   "name": "The Culture MRI® Profit Estimator",
-  "short_name": "Profit Calc",
+  "short_name": "Loss Calculator",
   "description": "Measure the true cost of disengagement and turnover on your bottom line",
   "start_url": "./",
   "display": "standalone",
