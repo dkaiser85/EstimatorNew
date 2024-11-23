@@ -283,8 +283,8 @@
             display: inline-flex;
             justify-content: center;
             align-items: center;
-            width: 16px;
-            height: 16px;
+            width: 20px; /* Slightly larger for better touch target */
+            height: 20px;
             background-color: transparent;
             color: #6666CC;
             border: 1px solid #6666CC;
@@ -295,8 +295,7 @@
             position: relative;
             font-style: italic;
             vertical-align: middle;
-            position: relative;
-            top: -2px;
+            z-index: 1;
         }
 
         .info-icon:hover {
@@ -307,19 +306,20 @@
         .tooltip {
             visibility: hidden;
             position: absolute;
-            bottom: 100%;
+            bottom: calc(100% + 10px); /* Add some space between icon and tooltip */
             left: 50%;
             transform: translateX(-50%);
             background-color: #333;
             color: white;
-            padding: 8px 12px;
+            padding: 12px;
             border-radius: 4px;
-            font-size: 12px;
-            width: 200px;
+            font-size: 14px;
+            width: 250px;
             text-align: left;
-            z-index: 1;
+            z-index: 1000; /* Ensure it's above other elements */
             opacity: 0;
             transition: opacity 0.3s;
+            pointer-events: none; /* Prevents tooltip from interfering with clicks */
         }
 
         .info-icon:hover .tooltip {
@@ -417,6 +417,30 @@
             /* Ensure tooltips appear above other elements */
             .tooltip {
                 z-index: 2;
+            }
+
+            .tooltip {
+                width: 200px;
+                left: 0;
+                transform: translateX(-50%);
+            }
+
+            /* Ensure tooltips don't go off-screen on the right */
+            .info-icon:last-child .tooltip {
+                left: auto;
+                right: 0;
+                transform: translateX(0);
+            }
+
+            /* Adjust position for right-aligned tooltips */
+            .info-icon:last-child .tooltip::after {
+                left: auto;
+                right: 10px;
+            }
+
+            h3 {
+                position: relative;
+                padding-right: 25px; /* Make room for info icon */
             }
         }
 
@@ -816,6 +840,66 @@
             // Show install button or banner
             showInstallPromotion();
         });
+
+        // Add this to your existing DOMContentLoaded event listener
+        function setupTooltips() {
+            const infoIcons = document.querySelectorAll('.info-icon');
+            let activeTooltip = null;
+
+            // Function to close active tooltip
+            function closeActiveTooltip() {
+                if (activeTooltip) {
+                    activeTooltip.querySelector('.tooltip').style.visibility = 'hidden';
+                    activeTooltip.querySelector('.tooltip').style.opacity = '0';
+                    activeTooltip = null;
+                }
+            }
+
+            infoIcons.forEach(icon => {
+                // Handle click events
+                icon.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const tooltip = this.querySelector('.tooltip');
+                    
+                    // If clicking the same icon that's already active, close it
+                    if (activeTooltip === this) {
+                        closeActiveTooltip();
+                        return;
+                    }
+                    
+                    // Close any active tooltip
+                    closeActiveTooltip();
+                    
+                    // Show new tooltip
+                    tooltip.style.visibility = 'visible';
+                    tooltip.style.opacity = '1';
+                    activeTooltip = this;
+                });
+
+                // Handle keyboard events
+                icon.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.click();
+                    }
+                });
+            });
+
+            // Close tooltip when clicking anywhere else on the page
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.info-icon')) {
+                    closeActiveTooltip();
+                }
+            });
+
+            // Close tooltip when scrolling
+            document.addEventListener('scroll', closeActiveTooltip);
+
+            // Close tooltip when resizing window
+            window.addEventListener('resize', closeActiveTooltip);
+        }
+
+        setupTooltips();
     });
 
     function showInstallPromotion() {
