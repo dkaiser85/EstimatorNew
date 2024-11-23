@@ -137,7 +137,7 @@
             stroke-linecap: round;
             stroke-width: 10;
             fill: none;
-            transition: stroke-dashoffset 0.5s ease-out, stroke 0.5s ease;
+            transition: stroke-dashoffset 1s ease-out, stroke 0.5s ease;
         }
 
         /* Financial Metrics */
@@ -160,9 +160,10 @@
 
         .financial-item p {
             font-size: 20px;
-            font-weight: 700; /* Inter Bold */
+            font-weight: 700;
             color: #173248;
             margin: 0;
+            transition: color 0.3s ease;
         }
 
         .financial-item p.red {
@@ -313,26 +314,63 @@
             border-color: #333 transparent transparent transparent;
         }
 
+        /* Add these styles to your existing CSS */
+        .error-message {
+            color: #ED5C5C;
+            font-size: 14px;
+            margin-top: 5px;
+            font-weight: 400;
+        }
+
+        .input-group input:invalid {
+            border-color: #ED5C5C;
+        }
+
+        /* Optional: Add a transition for smoother error state changes */
+        .input-group input {
+            transition: border-color 0.3s ease;
+        }
+
+        /* Add these animation styles */
+        @keyframes numberChange {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Add animation class */
+        .animate-number {
+            animation: numberChange 0.5s ease-out;
+        }
+
     </style>
 </head>
 <body>
 
-<div class="calculator-container">
-    <div class="calculator-header">
+<div class="calculator-container" role="main">
+    <div class="calculator-header" role="banner">
         <h2>Profitability Loss Calculator</h2>
         <p>Measure the true cost of disengagement and turnover on your bottom line.</p>
     </div>
 
-    <div class="input-section">
+    <div class="input-section" role="form" aria-label="Calculator Inputs">
         <!-- Total Labor Spend Input -->
         <div class="input-group">
             <label for="totalLaborCost">
                 Total Labor Spend (USD)
-                <span class="info-icon">i
-                    <span class="tooltip">The total amount spent annually on employee salaries, wages, and benefits.</span>
+                <span class="info-icon" role="tooltip" tabindex="0" aria-label="Information about Total Labor Spend">i
+                    <span class="tooltip" role="tooltip">The total amount spent annually on employee salaries, wages, and benefits.</span>
                 </span>
             </label>
-            <input type="text" id="totalLaborCost" placeholder="Enter your total labor spend">
+            <input type="text" 
+                   id="totalLaborCost" 
+                   placeholder="Enter your total labor spend in US dollars"
+                   aria-label="Total Labor Spend in USD">
         </div>
 
         <!-- Estimated Employee Engagement Input -->
@@ -439,16 +477,16 @@
         </div>
     </div>
 
+    <div class="logo-container">
+        <img src="https://static.showit.co/file/JNQ0xT5W_YRPIk_uSDJ7-Q/176740/3.png" alt="Company Logo" class="logo">
+    </div>
+
     <div class="calculator-footer">
         <p>&copy; 2024 The Culture MRI®. All Rights Reserved.</p>
     </div>
 
     <div class="liner-note">
         <em>*For simplicity, headcount is estimated using national average salary figures.</em>
-    </div>
-
-    <div class="logo-container">
-        <img src="https://static.showit.co/file/JNQ0xT5W_YRPIk_uSDJ7-Q/176740/3.png" alt="Company Logo" class="logo">
     </div>
 </div>
 
@@ -480,19 +518,60 @@
 
         // Add event listeners for input fields
         inputLaborCost.addEventListener('input', function(e) {
-            // Remove non-digit characters except decimal point
-            const value = e.target.value.replace(/,/g, '').replace(/[^0-9.]/g, '');
-            // Format with commas
-            e.target.value = formatNumberWithCommas(value);
+            // Remove any existing '$', commas, and non-digits except decimal point
+            let value = e.target.value.replace(/[$,]/g, '').replace(/[^\d.]/g, '');
+            
+            // If there's a value, format it
+            if (value) {
+                // Format with commas and add dollar sign
+                e.target.value = '$' + formatNumberWithCommas(value);
+            } else {
+                // If empty, don't add the dollar sign
+                e.target.value = '';
+            }
             calculateMetrics();
         });
 
+        // Add validation function
+        function validatePercentageInput(input) {
+            const value = parseFloat(input.value);
+            const inputGroup = input.closest('.input-group');
+            
+            // Clear any existing error messages
+            const existingError = inputGroup.querySelector('.error-message');
+            if (existingError) {
+                existingError.remove();
+            }
+            
+            // Validate the input
+            if (isNaN(value) || value < 0 || value > 100) {
+                input.setCustomValidity('Please enter a value between 0 and 100');
+                input.reportValidity();
+                
+                // Add error message below input
+                const errorMessage = document.createElement('div');
+                errorMessage.className = 'error-message';
+                errorMessage.textContent = 'Please enter a value between 0 and 100';
+                inputGroup.appendChild(errorMessage);
+                
+                return false;
+            }
+            
+            input.setCustomValidity('');
+            return true;
+        }
+
+        // Update the event listeners
         inputEngagement.addEventListener('input', function() {
-            calculateMetrics();
+            if (validatePercentageInput(this)) {
+                calculateMetrics();
+            }
         });
 
         inputTurnover.addEventListener('input', function() {
-            calculateMetrics();
+            if (validatePercentageInput(this)) {
+                calculateMetrics();
+            }
         });
 
         function formatNumberWithCommas(number) {
@@ -514,8 +593,8 @@
         }
 
         function calculateMetrics() {
-            // Parse the labor cost input by removing commas
-            const laborCost = parseFloat(inputLaborCost.value.replace(/,/g, ''));
+            // Parse the labor cost input by removing '$' and commas
+            const laborCost = parseFloat(inputLaborCost.value.replace(/[$,]/g, ''));
             const engagementPercentage = parseFloat(inputEngagement.value);
             const turnoverPercentage = parseFloat(inputTurnover.value);
 
@@ -603,10 +682,27 @@
             onePercentChangeEl.textContent = '--';
             totalAnnualizedLossesEl.textContent = '--';
         }
+
+        // Add keyboard support for tooltips
+        const infoIcons = document.querySelectorAll('.info-icon');
+        infoIcons.forEach(icon => {
+            icon.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    const tooltip = this.querySelector('.tooltip');
+                    tooltip.style.visibility = 'visible';
+                    tooltip.style.opacity = '1';
+                }
+            });
+            
+            icon.addEventListener('blur', function() {
+                const tooltip = this.querySelector('.tooltip');
+                tooltip.style.visibility = 'hidden';
+                tooltip.style.opacity = '0';
+            });
+        });
     });
 </script>
 
 </body>
 </html>
-
-
