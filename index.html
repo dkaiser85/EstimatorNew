@@ -292,10 +292,10 @@
             cursor: pointer;
             position: relative;
             font-style: italic;
-            vertical-align: text-top;
+            vertical-align: middle;
             z-index: 100;
             -webkit-tap-highlight-color: transparent;
-            line-height: 24px;
+            line-height: 1;
         }
 
         .info-icon:hover {
@@ -467,18 +467,27 @@
         /* Add styles for the label wrapper */
         .input-label-wrapper {
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             margin-bottom: 8px;
             pointer-events: none;
         }
 
         .input-label-wrapper label {
             pointer-events: auto;
-            line-height: 24px;
+            margin: 0;
+            padding: 0;
+            line-height: normal;
         }
 
         .input-label-wrapper .info-icon {
             pointer-events: auto;
+        }
+
+        /* Add specific styles for the Total Labor Spend label */
+        #totalLaborCost-label {
+            display: flex;
+            align-items: center;
+            gap: 5px; /* Adds consistent spacing between label and icon */
         }
 
     </style>
