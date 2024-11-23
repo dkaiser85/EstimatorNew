@@ -1,16 +1,35 @@
 {
+  "name": "The Culture MRI® Profit Estimator",
+  "short_name": "Profit Calc",
+  "description": "Measure the true cost of disengagement and turnover on your bottom line",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#6666CC",
   "icons": [
     {
       "src": "./icons/CMRI192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any"  // Try removing "maskable" first to test
+      "purpose": "maskable"
+    },
+    {
+      "src": "./icons/CMRI192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "./icons/CMRI512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any"  // Try removing "maskable" first to test
+      "purpose": "maskable"
+    },
+    {
+      "src": "./icons/CMRI512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
     }
   ]
 }
